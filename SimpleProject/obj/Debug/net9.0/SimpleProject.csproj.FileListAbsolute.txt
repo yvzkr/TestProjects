@@ -1,0 +1,14 @@
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\bin\Debug\net9.0\SimpleProject.exe
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\bin\Debug\net9.0\SimpleProject.deps.json
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\bin\Debug\net9.0\SimpleProject.runtimeconfig.json
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\bin\Debug\net9.0\SimpleProject.dll
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\bin\Debug\net9.0\SimpleProject.pdb
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\obj\Debug\net9.0\SimpleProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\obj\Debug\net9.0\SimpleProject.AssemblyInfoInputs.cache
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\obj\Debug\net9.0\SimpleProject.AssemblyInfo.cs
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\obj\Debug\net9.0\SimpleProject.csproj.CoreCompileInputs.cache
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\obj\Debug\net9.0\SimpleProject.dll
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\obj\Debug\net9.0\refint\SimpleProject.dll
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\obj\Debug\net9.0\SimpleProject.pdb
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\obj\Debug\net9.0\SimpleProject.genruntimeconfig.cache
+C:\Users\yavuzkuru\Desktop\Projects\TestProjects\SimpleProject\obj\Debug\net9.0\ref\SimpleProject.dll
