@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  zebrash-api:
+    build: .
+    container_name: zebrash-api
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./output:/root/output
+      - ./testdata:/root/testdata
+    environment:
+      - GIN_MODE=release
+    restart: unless-stopped
+    networks:
+      - zebrash-network
+
+networks:
+  zebrash-network:
+    driver: bridge

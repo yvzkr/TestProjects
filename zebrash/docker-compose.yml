@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  zebrash:
+    build: .
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./output:/root/output
+      - ./testdata:/root/testdata
+    environment:
+      - GIN_MODE=release
+    restart: unless-stopped
