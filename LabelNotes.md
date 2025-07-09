@@ -1,31 +1,31 @@
-**Konu: ZPL Etiket Verilerinin Yerel Sunucularda (On-Premise) İşlenmesi İçin Açık Kaynaklı Sistem Alternatifleri**
+**Subject: Open Source System Alternatives for Processing ZPL Label Data on Local Servers (On-Premise)**
 
-Şirketimizin operasyonel süreçlerinde kullandığı ZPL tabanlı etiketlerin oluşturulması sırasında, mevcut durumda kullanılan harici web servisleri (örneğin Labelary.com) veri gizliliği ve bilgi güvenliği açısından risk teşkil etmektedir. Müşteri veya ürün verisi gibi hassas bilgilerin kontrolümüz dışındaki sunuculara gönderilmesini engellemek amacıyla, bu işlevselliği kendi altyapımızda barındıracak (on-premise) bir çözüme geçilmesi hedeflenmektedir.
+In our company's operational processes for creating ZPL-based labels, the currently used external web services (such as Labelary.com) pose risks in terms of data privacy and information security. To prevent sensitive information such as customer or product data from being sent to servers outside our control, it is aimed to transition to a solution that will host this functionality in our own infrastructure (on-premise).
 
-Bu ihtiyaca yönelik yapılan araştırmalar sonucunda, ZPL verilerini PNG/PDF gibi formatlara dönüştürebilen, güvenilir ve açık kaynak kodlu aşağıdaki alternatifler tespit edilmiştir:
+As a result of research conducted for this need, the following reliable and open-source alternatives that can convert ZPL data to formats such as PNG/PDF have been identified:
 
-1.  **zpl-tool:** Labelary'ye benzer modern bir web arayüzü sunan, Docker ile kolayca kurulabilen ve canlı önizleme gibi gelişmiş özellikler barındıran komple bir çözümdür. Hızlıca devreye alınabilecek en yetenekli alternatiftir.
+1.  **zpl-tool:** A complete solution that offers a modern web interface similar to Labelary, can be easily installed with Docker, and includes advanced features such as live preview. It is the most capable alternative that can be quickly deployed.
 
-    - **Repo Linki:** [https://github.com/enoy19/zpl-tool](https://github.com/enoy19/zpl-tool)
-
-    DeveloperNote:
-
-    - Localde test ettim. Docker ile çalışıyor.
-    - Docker ile çalışırken, docker-compose.yml dosyasında, binarykits-zpl servisini açık bırakıyorum.
-    - SvelteKit ile yazılmış bir arayüzü var. Manüpüle yapılabiliyor(denedim).
-    - repoyu forklamak yeterli, Fazla star yok ama düşündürdü.
-
-2.  **Zebrash:** Doğrudan Labelary alternatifi olarak geliştirilmiş, yüksek performanslı bir Go kütüphanesidir. Mevcut sistemlerimize ZPL'den resim oluşturma yeteneğini bir mikroservis olarak eklemek için oldukça uygundur.
-
-    - **Repo Linki:** [https://github.com/ingridhq/zebrash](https://github.com/ingridhq/zebrash)
+    - **Repo Link:** [https://github.com/enoy19/zpl-tool](https://github.com/enoy19/zpl-tool)
 
     DeveloperNote:
 
-    - Docker ile çalışır.
-    - repoyu forklamak yeterli, Biraz daha fazla star var.
-    - Hazır UI yoktu ben ekledim.
+    - Tested locally. Works with Docker.
+    - When working with Docker, I keep the binarykits-zpl service enabled in the docker-compose.yml file.
+    - Has an interface written with SvelteKit. Can be manipulated (I tried it).
+    - Forking the repo is sufficient. Not many stars but made me think.
 
-3.  **ZplDesigner:** C#/.NET tabanlı bir ZPL işleme kütüphanesidir. Şirketimizdeki mevcut .NET tabanlı projelere kolayca entegre edilebilecek olması nedeniyle stratejik bir avantaj sunmaktadır.
-    - **Repo Linki:** [https://github.com/IkeRolfe/ZplDesigner](https://github.com/IkeRolfe/ZplDesigner)
+2.  **Zebrash:** A high-performance Go library developed as a direct alternative to Labelary. It is quite suitable for adding ZPL to image generation capability to our existing systems as a microservice.
 
-Bu projelerden birinin benimsenmesi, veri güvenliğimizi artırırken dışa bağımlılığı ortadan kaldıracak ve uzun vadede maliyet avantajı sağlayacaktır.
+    - **Repo Link:** [https://github.com/ingridhq/zebrash](https://github.com/ingridhq/zebrash)
+
+    DeveloperNote:
+
+    - Works with Docker.
+    - Forking the repo is sufficient. Has a bit more stars.
+    - No ready UI, I added it.
+
+3.  **ZplDesigner:** A C#/.NET-based ZPL processing library. It offers a strategic advantage as it can be easily integrated into existing .NET-based projects in our company.
+    - **Repo Link:** [https://github.com/IkeRolfe/ZplDesigner](https://github.com/IkeRolfe/ZplDesigner)
+
+Adopting one of these projects will increase our data security while eliminating external dependencies and provide cost advantages in the long term.
