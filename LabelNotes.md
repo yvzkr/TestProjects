@@ -19,6 +19,12 @@ Bu ihtiyaca yönelik yapılan araştırmalar sonucunda, ZPL verilerini PNG/PDF g
 
     - **Repo Linki:** [https://github.com/ingridhq/zebrash](https://github.com/ingridhq/zebrash)
 
+    DeveloperNote:
+
+    - Docker ile çalışır.
+    - repoyu forklamak yeterli, Biraz daha fazla star var.
+    - Hazır UI yoktu ben ekledim.
+
 3.  **ZplDesigner:** C#/.NET tabanlı bir ZPL işleme kütüphanesidir. Şirketimizdeki mevcut .NET tabanlı projelere kolayca entegre edilebilecek olması nedeniyle stratejik bir avantaj sunmaktadır.
     - **Repo Linki:** [https://github.com/IkeRolfe/ZplDesigner](https://github.com/IkeRolfe/ZplDesigner)
 
