@@ -56,24 +56,24 @@ app.MapGet("/", async context =>
     </style>
 </head>
 <body>
-    <div class='container'>
+    <div class=""container"">
         <h1>🎨 ZplDesigner Web API</h1>
-        <div class='info'>
+        <div class=""info"">
             <p><strong>✅ .NET Tabanlı Çözüm:</strong> ZPL kodunu PNG görseline dönüştürün. Tamamen yerel çalışır!</p>
             <p><strong>🔒 Veri Güvenliği:</strong> Tüm işlemler kendi sunucunuzda gerçekleşir.</p>
         </div>
         
         <h3>ZPL Kodu:</h3>
-        <textarea id='zplCode' placeholder='ZPL kodunuzu buraya yapıştırın...'>^XA
+        <textarea id=""zplCode"" placeholder=""ZPL kodunuzu buraya yapıştırın..."">^XA
 ^FO50,50^ADN,36,20^FDTest Şirketi^FS
 ^FO50,100^ADN,24,12^FDTest Ürünü^FS
 ^FO50,150^ADN,18,10^FD99.99 TL^FS
 ^FO50,200^ADN,12,8^FD2025-07-09^FS
 ^XZ</textarea>
         
-        <button onclick='renderZPL()'>🖼️ PNG Oluştur</button>
+        <button onclick=""renderZPL()"">🖼️ PNG Oluştur</button>
         
-        <div class='result' id='result'></div>
+        <div class=""result"" id=""result""></div>
     </div>
 
     <script>
@@ -81,7 +81,7 @@ app.MapGet("/", async context =>
             const zplCode = document.getElementById('zplCode').value;
             const resultDiv = document.getElementById('result');
             
-            resultDiv.innerHTML = '<div class=\"info\">⏳ İşleniyor...</div>';
+            resultDiv.innerHTML = '<div class=""info"">⏳ İşleniyor...</div>';
             
             try {
                 const response = await fetch('/api/zpl/render', {
@@ -100,12 +100,12 @@ app.MapGet("/", async context =>
                 const data = await response.json();
                 
                 if (data.success) {
-                    resultDiv.innerHTML = '<div class=\"info\"><h3>✅ Başarılı!</h3><img src=\"data:image/png;base64,' + data.image + '\" alt=\"ZPL Render\"></div>';
+                    resultDiv.innerHTML = '<div class=""info""><h3>✅ Başarılı!</h3><img src=""data:image/png;base64,' + data.image + '"" alt=""ZPL Render""></div>';
                 } else {
-                    resultDiv.innerHTML = '<div class=\"info\" style=\"background: #ffe6e6;\"><h3>❌ Hata:</h3><p>' + data.message + '</p></div>';
+                    resultDiv.innerHTML = '<div class=""info"" style=""background: #ffe6e6;""><h3>❌ Hata:</h3><p>' + data.message + '</p></div>';
                 }
             } catch (error) {
-                resultDiv.innerHTML = '<div class=\"info\" style=\"background: #ffe6e6;\"><h3>❌ Hata:</h3><p>' + error.message + '</p></div>';
+                resultDiv.innerHTML = '<div class=""info"" style=""background: #ffe6e6;""><h3>❌ Hata:</h3><p>' + error.message + '</p></div>';
             }
         }
     </script>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barkod Test Uygulaması</title>
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .container {
+        display: flex;
+        gap: 20px;
+      }
+      .section {
+        flex: 1;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      #video {
+        width: 100%;
+        max-width: 400px;
+        height: 300px;
+        border: 2px solid #333;
+      }
+      #result {
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        min-height: 50px;
+      }
+      .barcode-input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      .btn:hover {
+        background-color: #0056b3;
+      }
+      .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      .drop-zone {
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        padding: 40px;
+        text-align: center;
+        margin: 20px 0;
+        background-color: #f9f9f9;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .drop-zone:hover {
+        border-color: #007bff;
+        background-color: #f0f8ff;
+      }
+      .drop-zone.dragover {
+        border-color: #007bff;
+        background-color: #e6f3ff;
+      }
+      .drop-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .upload-icon {
+        font-size: 48px;
+        margin-bottom: 10px;
+      }
+      .image-preview {
+        margin: 20px 0;
+        text-align: center;
+      }
+      .image-preview img {
+        max-width: 100%;
+        max-height: 300px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+      }
+      .btn-secondary {
+        background-color: #6c757d;
+      }
+      .btn-secondary:hover {
+        background-color: #545b62;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Barkod Test Uygulaması</h1>
+
+    <div class="container">
+      <div class="section">
+        <h2>📱 Kamera ile Barkod Okuma</h2>
+        <video id="video" autoplay></video>
+        <button id="startButton" class="btn">Kamerayı Başlat</button>
+        <button id="stopButton" class="btn" style="display: none">
+          Kamerayı Durdur
+        </button>
+        <div id="result">Sonuç burada görünecek...</div>
+      </div>
+
+      <div class="section">
+        <h2>🔍 Manuel Barkod Test</h2>
+        <p>ZPL-tool'da oluşturduğunuz barkod verilerini buraya girin:</p>
+        <input
+          type="text"
+          id="manualInput"
+          class="barcode-input"
+          placeholder="Barkod verilerinizi buraya girin..."
+        />
+        <button onclick="testManualBarcode()" class="btn">Test Et</button>
+        <div id="manualResult">Manuel test sonucu...</div>
+
+        <h3>Test Verileri:</h3>
+        <div id="testData">
+          <p>
+            <strong>Code 128 Test:</strong>
+            123456789
+          </p>
+          <p>
+            <strong>Code 39 Test:</strong>
+            ABC123
+          </p>
+          <p>
+            <strong>QR Code Test:</strong>
+            https://www.google.com
+          </p>
+          <p>
+            <strong>EAN-13 Test:</strong>
+            1234567890123
+          </p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>📷 Barkod Resmi Yükleme</h2>
+        <p>Barkod resmini yükleyin veya sürükleyip bırakın:</p>
+        <div id="dropZone" class="drop-zone">
+          <div class="drop-content">
+            <div class="upload-icon">📁</div>
+            <p>Resim dosyasını buraya sürükleyin veya tıklayın</p>
+            <input
+              type="file"
+              id="fileInput"
+              accept="image/*"
+              style="display: none"
+            />
+          </div>
+        </div>
+        <div id="imagePreview" class="image-preview" style="display: none">
+          <img id="previewImage" alt="Barkod Önizleme" />
+          <button onclick="scanUploadedImage()" class="btn">
+            Barkodu Tara
+          </button>
+          <button onclick="clearUploadedImage()" class="btn btn-secondary">
+            Temizle
+          </button>
+        </div>
+        <div id="uploadResult">Yükleme sonucu burada görünecek...</div>
+      </div>
+    </div>
+
+    <script>
+      let codeReader;
+      let videoElement;
+      let startButton;
+      let stopButton;
+      let resultDiv;
+      let isScanning = false;
+
+      window.onload = function () {
+        videoElement = document.getElementById('video');
+        startButton = document.getElementById('startButton');
+        stopButton = document.getElementById('stopButton');
+        resultDiv = document.getElementById('result');
+
+        codeReader = new ZXing.BrowserMultiFormatReader();
+
+        startButton.addEventListener('click', startScanning);
+        stopButton.addEventListener('click', stopScanning);
+
+        // Dosya yükleme işlemleri
+        setupFileUpload();
+      };
+
+      async function startScanning() {
+        try {
+          await codeReader.decodeFromVideoDevice(
+            null,
+            videoElement,
+            (result, err) => {
+              if (result) {
+                resultDiv.innerHTML = `<div class="success">
+                            <strong>✅ Barkod Okundu!</strong><br>
+                            <strong>Veri:</strong> ${result.text}<br>
+                            <strong>Format:</strong> ${result.format}
+                        </div>`;
+
+                // Ses efekti (isteğe bağlı)
+                playBeep();
+              }
+              if (err && !(err instanceof ZXing.NotFoundException)) {
+                resultDiv.innerHTML = `<div class="error">
+                            <strong>❌ Hata:</strong> ${err}
+                        </div>`;
+              }
+            }
+          );
+
+          startButton.style.display = 'none';
+          stopButton.style.display = 'inline-block';
+          isScanning = true;
+          resultDiv.innerHTML =
+            '<div class="success">🔍 Kamera başlatıldı. Barkodu kameraya gösterin...</div>';
+        } catch (err) {
+          resultDiv.innerHTML = `<div class="error">
+                    <strong>❌ Kamera hatası:</strong> ${err}
+                </div>`;
+        }
+      }
+
+      function stopScanning() {
+        if (codeReader) {
+          codeReader.reset();
+        }
+        startButton.style.display = 'inline-block';
+        stopButton.style.display = 'none';
+        isScanning = false;
+        resultDiv.innerHTML = 'Kamera durduruldu.';
+      }
+
+      function testManualBarcode() {
+        const input = document.getElementById('manualInput').value;
+        const resultDiv = document.getElementById('manualResult');
+
+        if (!input.trim()) {
+          resultDiv.innerHTML =
+            '<div class="error">❌ Lütfen barkod verisi girin!</div>';
+          return;
+        }
+
+        resultDiv.innerHTML = `<div class="success">
+                <strong>✅ Manuel Test Başarılı!</strong><br>
+                <strong>Girilen Veri:</strong> ${input}<br>
+                <strong>Veri Uzunluğu:</strong> ${input.length} karakter
+            </div>`;
+      }
+
+      function playBeep() {
+        // Basit beep sesi (isteğe bağlı)
+        const audioContext = new (window.AudioContext ||
+          window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.frequency.value = 800;
+        gainNode.gain.value = 0.1;
+
+        oscillator.start();
+        setTimeout(() => {
+          oscillator.stop();
+        }, 200);
+      }
+
+      // Dosya yükleme işlemleri
+      function setupFileUpload() {
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImage = document.getElementById('previewImage');
+        const uploadResult = document.getElementById('uploadResult');
+
+        // Drop zone tıklama
+        dropZone.addEventListener('click', () => {
+          fileInput.click();
+        });
+
+        // Dosya seçimi
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // Drag and drop işlemleri
+        dropZone.addEventListener('dragover', e => {
+          e.preventDefault();
+          dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+          dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', e => {
+          e.preventDefault();
+          dropZone.classList.remove('dragover');
+          const files = e.dataTransfer.files;
+          if (files.length > 0) {
+            handleFile(files[0]);
+          }
+        });
+      }
+
+      function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (file) {
+          handleFile(file);
+        }
+      }
+
+      function handleFile(file) {
+        if (!file.type.startsWith('image/')) {
+          document.getElementById('uploadResult').innerHTML =
+            '<div class="error">❌ Lütfen geçerli bir resim dosyası seçin!</div>';
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const previewImage = document.getElementById('previewImage');
+          const imagePreview = document.getElementById('imagePreview');
+
+          previewImage.src = e.target.result;
+          imagePreview.style.display = 'block';
+
+          document.getElementById('uploadResult').innerHTML =
+            '<div class="success">✅ Resim yüklendi! "Barkodu Tara" butonuna tıklayın.</div>';
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function scanUploadedImage() {
+        const previewImage = document.getElementById('previewImage');
+        const uploadResult = document.getElementById('uploadResult');
+
+        if (!previewImage.src) {
+          uploadResult.innerHTML =
+            '<div class="error">❌ Lütfen önce bir resim yükleyin!</div>';
+          return;
+        }
+
+        uploadResult.innerHTML =
+          '<div class="success">🔍 Barkod taranıyor...</div>';
+
+        // Canvas oluştur ve resmi çiz
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+
+        img.onload = function () {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          // ZXing ile barkod tara
+          try {
+            codeReader.decodeFromCanvas(canvas, (result, err) => {
+              if (result) {
+                uploadResult.innerHTML = `<div class="success">
+                  <strong>✅ Barkod Okundu!</strong><br>
+                  <strong>Veri:</strong> ${result.text}<br>
+                  <strong>Format:</strong> ${result.format}
+                </div>`;
+                playBeep();
+              } else if (err) {
+                uploadResult.innerHTML = `<div class="error">
+                  <strong>❌ Barkod okunamadı:</strong> ${
+                    err.message || 'Barkod bulunamadı'
+                  }
+                </div>`;
+              }
+            });
+          } catch (error) {
+            uploadResult.innerHTML = `<div class="error">
+              <strong>❌ Tarama hatası:</strong> ${error.message}
+            </div>`;
+          }
+        };
+
+        img.src = previewImage.src;
+      }
+
+      function clearUploadedImage() {
+        const imagePreview = document.getElementById('imagePreview');
+        const fileInput = document.getElementById('fileInput');
+        const uploadResult = document.getElementById('uploadResult');
+
+        imagePreview.style.display = 'none';
+        fileInput.value = '';
+        uploadResult.innerHTML = 'Yükleme sonucu burada görünecek...';
+      }
+
+      // Sayfa kapatılırken kamerayı durdur
+      window.addEventListener('beforeunload', function () {
+        if (isScanning) {
+          stopScanning();
+        }
+      });
+    </script>
+  </body>
+</html>

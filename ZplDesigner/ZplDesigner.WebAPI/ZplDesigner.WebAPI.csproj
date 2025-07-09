@@ -8,7 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
-    <Swashbuckle.AspNetCore Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="BinaryKits.Zpl.Viewer" Version="1.2.1" />
   </ItemGroup>
 
   <ItemGroup>

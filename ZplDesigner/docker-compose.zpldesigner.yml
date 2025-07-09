@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  zpldesigner-api:
+    build: .
+    container_name: zpldesigner-api
+    ports:
+      - '8081:8080'
+    volumes:
+      - ./output:/app/output
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+    restart: unless-stopped
+    networks:
+      - zpldesigner-network
+
+networks:
+  zpldesigner-network:
+    driver: bridge
